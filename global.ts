@@ -108,8 +108,3 @@ export function removeDuplicates<T>(array: T[]): T[] {
         
     return result;
 }
-
-
-
-
-console.log(equals(undefined, undefined));
