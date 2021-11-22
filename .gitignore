@@ -1,0 +1,7 @@
+# folders
+/node_modules
+/try_things
+
+# files
+package*.json
+*.js
