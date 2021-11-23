@@ -1,16 +1,21 @@
 /**
- * Determines if the type of a given value is primitive or not
+ * Determines if the type of a given value is primitive
  */
 export function isPrimitive(val: any): boolean {
 
-    if( val === null ) {
-        // throw error ?
+    if(val === undefined) {
+        throw new Error('error: undefined parameter');
+    }
+
+    if(val === null) {
         return true;
     }
       
     if (typeof val == "object" || typeof val == "function") {
       return false;
     }
+
+    return true;
 }
 
 
@@ -38,7 +43,7 @@ function shallowEquals<T>(element1: T, element2: T): boolean {
 
 /**
  * Tests equality between two given variables
- * If variables are litteral objects `shallowEquals()`
+ * See `shallowEquals()`
  */
 export function equals<T>(element1: T, element2: T): boolean {
 
@@ -74,7 +79,7 @@ export function convertToObject<T>(array: T[], ...keys: string[]): { [key:string
             for (const k of keys) {
 
                 if( !element.hasOwnProperty(k)) {
-                    throw Error(`Current object does not contain key "${k}"`);
+                    throw Error(`error : object does not contain key "${k}"`);
                 }
                 objectKeys.push(element[k]);
             }
@@ -91,20 +96,20 @@ export function convertToObject<T>(array: T[], ...keys: string[]): { [key:string
 }
 
 
+/**
+ * Removes duplicate values in a given array
+ */
 export function removeDuplicates<T>(array: T[]): T[] {
 
-    const result = [...array];
-    for (let i = 0; i < result.length; i++) {
-        const element = result[i];
-
-        for (let j = 0; j < result.length; j++) {
-            const compared = result[j];
-            if(equals(element, compared) && i !== j) {
-                result.splice(j,1)
-            }
+    const res = {};
+    for (let i = 0; i < array.length; i++) {
+        const element = array[i];
+        const key = isPrimitive(element) ? element.toString() : JSON.stringify(element);
+        if( !res[key]) {
+            res[key] = element;
         }
     }
 
-        
-    return result;
+    return Object.values(res);
 }
+
